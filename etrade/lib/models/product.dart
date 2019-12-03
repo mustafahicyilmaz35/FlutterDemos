@@ -32,19 +32,20 @@ class Product {
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-    map["name"] = _name;
-    map["decription"] = _description;
-    map["price"] = _price;
+    map["Name"] = _name;
+    map["Description"] = _description;
+    map["Price"] = _price;
     if (_id != null) {
-      map["id"] = _id;
+      map["Id"] = _id;
     }
     return map;
   }
+
   //Dış kaynaktan gelen veriler için
-  Product.fromObject(dynamic o){
-    this._id = o["id"];
-    this._name = o["name"];
-    this._description = o["description"];
-    this._price = o["price"];
+  Product.fromObject(dynamic o) {
+    this._id = o["Id"];
+    this._name = o["Name"];
+    this._description = o["Description"];
+    this._price = double.tryParse(o["Price"].toString());
   }
 }
