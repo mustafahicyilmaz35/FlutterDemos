@@ -1,5 +1,6 @@
 import 'package:etrade/db/dbHelper.dart';
 import 'package:etrade/models/product.dart';
+import 'package:etrade/screens/productDetail.dart';
 import 'package:flutter/material.dart';
 
 class ProductList extends StatefulWidget {
@@ -10,11 +11,11 @@ class ProductList extends StatefulWidget {
 class ProductListState extends State {
   DbHelper dbHelper = new DbHelper();
   List<Product> products;
-  int count  = 0;
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    if(products == null){
+    if (products == null) {
       products = new List<Product>();
       getData();
     }
@@ -23,36 +24,34 @@ class ProductListState extends State {
     );
   }
 
-  ListView 
-  productListItems() {
-
+  ListView productListItems() {
     return ListView.builder(
       itemCount: count,
-      itemBuilder: (BuildContext context, int position){
+      itemBuilder: (BuildContext context, int position) {
         return Card(
-          color: Colors.amberAccent,
-          elevation: 2.0,
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.green,
-              child: Text("A")
-              ),
+            color: Colors.amberAccent,
+            elevation: 2.0,
+            child: ListTile(
+              leading:
+                  CircleAvatar(backgroundColor: Colors.green, child: Text("A")),
               title: Text(this.products[position].name),
               subtitle: Text(this.products[position].description),
-              onTap: (){},
-          )
-        );
+              onTap: () {
+                GoToDetail(this.products[position]);
+              },
+            ));
       },
     );
   }
-  void getData(){
+
+  void getData() {
     var dbFuture = dbHelper.initializeDb();
-    dbFuture.then((result){
+    dbFuture.then((result) {
       var productsFuture = dbHelper.getProduct();
-      productsFuture.then((data){
+      productsFuture.then((data) {
         List<Product> productsData = new List<Product>();
         count = data.length;
-        for(int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
           productsData.add(Product.fromObject(data[i]));
           setState(() {
             products = productsData;
@@ -61,5 +60,10 @@ class ProductListState extends State {
         }
       });
     });
+  }
+
+  void GoToDetail(Product product) async {
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProductDetail(product)));
   }
 }
