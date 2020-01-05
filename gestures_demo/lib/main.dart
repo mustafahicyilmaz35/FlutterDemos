@@ -47,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       centerBox(context);
     });
     controller.forward();
+    
   }
   @override
   void dispose() {
